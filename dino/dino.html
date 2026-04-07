@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Dino Game com Cenário</title>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: #87CEEB;
+        font-family: Arial, sans-serif;
+    }
+
+    canvas {
+        display: block;
+        margin: auto;
+        background: linear-gradient(#87CEEB, #E0F6FF);
+        border-bottom: 3px solid #333;
+    }
+
+    #score {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 20px;
+        color: #333;
+    }
+
+    #gameOver {
+        position: absolute;
+        top: 40%;
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<div id="score">0</div>
+<div id="gameOver">GAME OVER<br>Pressione ESPAÇO</div>
+<canvas id="game" width="800" height="200"></canvas>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let dino = {
+    x: 50, y: 150, w: 40, h: 40,
+    dy: 0, gravity: 0.6, jump: -12, grounded: true
+};
+
+let obstacles = [];
+let clouds = [];
+let mountains = [];
+
+let speed = 6;
+let score = 0;
+let gameOver = false;
+let groundOffset = 0;
+
+// CONTROLES
+document.addEventListener("keydown", e => {
+    if (e.code === "Space") {
+        if (gameOver) restart();
+        else if (dino.grounded) {
+            dino.dy = dino.jump;
+            dino.grounded = false;
+        }
+    }
+});
+
+// CENÁRIO
+function spawnCloud() {
+    clouds.push({
+        x: canvas.width,
+        y: Math.random() * 80,
+        size: Math.random() * 20 + 20,
+        speed: 1
+    });
+}
+
+function spawnMountain() {
+    mountains.push({
+        x: canvas.width,
+        h: Math.random() * 50 + 50,
+        speed: 2
+    });
+}
+
+// OBSTÁCULOS
+function spawnObstacle() {
+    let size = Math.random() * 20 + 20;
+    obstacles.push({
+        x: canvas.width,
+        y: 200 - size,
+        w: size,
+        h: size
+    });
+}
+
+// UPDATE
+function update() {
+    if (gameOver) return;
+
+    // Dino física
+    dino.y += dino.dy;
+    dino.dy += dino.gravity;
+
+    if (dino.y + dino.h >= 200) {
+        dino.y = 200 - dino.h;
+        dino.dy = 0;
+        dino.grounded = true;
+    }
+
+    // Obstáculos
+    obstacles.forEach(o => o.x -= speed);
+    obstacles = obstacles.filter(o => o.x + o.w > 0);
+
+    // Nuvens
+    clouds.forEach(c => c.x -= c.speed);
+    clouds = clouds.filter(c => c.x > -50);
+
+    // Montanhas
+    mountains.forEach(m => m.x -= m.speed);
+    mountains = mountains.filter(m => m.x > -100);
+
+    // Spawn cenário
+    if (Math.random() < 0.01) spawnCloud();
+    if (Math.random() < 0.005) spawnMountain();
+    if (Math.random() < 0.02) spawnObstacle();
+
+    // Colisão
+    obstacles.forEach(o => {
+        if (
+            dino.x < o.x + o.w &&
+            dino.x + dino.w > o.x &&
+            dino.y < o.y + o.h &&
+            dino.y + dino.h > o.y
+        ) {
+            gameOver = true;
+            document.getElementById("gameOver").style.display = "block";
+        }
+    });
+
+    // Chão animado
+    groundOffset -= speed;
+    if (groundOffset <= -40) groundOffset = 0;
+
+    // Pontuação
+    score++;
+    document.getElementById("score").innerText = score;
+}
+
+// DRAW
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Montanhas (fundo)
+    ctx.fillStyle = "#999";
+    mountains.forEach(m => {
+        ctx.beginPath();
+        ctx.moveTo(m.x, 200);
+        ctx.lineTo(m.x + 50, 200 - m.h);
+        ctx.lineTo(m.x + 100, 200);
+        ctx.fill();
+    });
+
+    // Nuvens
+    ctx.fillStyle = "#fff";
+    clouds.forEach(c => {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
+        ctx.arc(c.x + c.size, c.y, c.size, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    // Chão
+    ctx.strokeStyle = "#333";
+    ctx.beginPath();
+    for (let i = 0; i < canvas.width; i += 40) {
+        ctx.moveTo(i + groundOffset, 200);
+        ctx.lineTo(i + 20 + groundOffset, 200);
+    }
+    ctx.stroke();
+
+    // Dino
+    ctx.fillStyle = "#222";
+    ctx.fillRect(dino.x, dino.y, dino.w, dino.h);
+
+    // Obstáculos
+    ctx.fillStyle = "#444";
+    obstacles.forEach(o => {
+        ctx.fillRect(o.x, o.y, o.w, o.h);
+    });
+}
+
+// LOOP
+function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+}
+
+function restart() {
+    dino.y = 150;
+    dino.dy = 0;
+    obstacles = [];
+    clouds = [];
+    mountains = [];
+    score = 0;
+    gameOver = false;
+    document.getElementById("gameOver").style.display = "none";
+}
+
+// START
+loop();
+</script>
+
+</body>
+</html>

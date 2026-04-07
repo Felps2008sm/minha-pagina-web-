@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Área de Jogos</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #111;
+    color: white;
+    text-align: center;
+}
+
+.jogos {
+    padding: 20px;
+}
+
+.jogos h2 {
+    margin-bottom: 20px;
+}
+
+.container-jogos {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.jogo {
+    background: #222;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+iframe {
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+<h1>🎮 Meu Site de Jogos</h1>
+
+<section class="jogos">
+    <h2>Jogos disponíveis</h2>
+
+    <div class="container-jogos">
+
+        <!-- Jogo 1 -->
+        <div class="jogo">
+            <h3>Dino Game</h3>
+            <iframe src="dino/dino.html" width="400" height="200"></iframe>
+        </div>
+
+        <!-- Jogo 2 (externo) -->
+        <div class="jogo">
+            <h3>Jogo Online</h3>
+            <iframe src="jogos.htm/jogo.html" width="400" height="200"></iframe>
+        </div>
+
+    </div>
+</section>
+
+</body>
+<a href="pagina.html">voltar para pagina</a>
+</html>

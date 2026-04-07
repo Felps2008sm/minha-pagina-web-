@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Música</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">Minha Logo</div>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="pagina.html">Home</a></li>
+            <li><a href="filmes.html">Filmes</a></li>
+            <li><a href="musica.html">Música</a></li>
+            <li><a href="area.html">Jogos</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- HERO -->
+<section class="music-hero">
+    <h1>🎵 Música</h1>
+    <p>Escute suas músicas favoritas</p>
+</section>
+
+<!-- PLAYLIST -->
+<section class="playlist">
+
+    <div class="music-card" onclick="playMusic('Akon - Smack That (Official Music Video) ft. Eminem(M4A_128K).m4a', 'Akon - Smack That')">
+        <h3>Akon - Smack That</h3>
+    </div>
+
+    <div class="music-card" onclick="playMusic('One Step Closer [Official HD Music Video] - Linkin Park(M4A_128K).m4a', 'Linkin Park - One Step Closer')">
+        <h3>Linkin Park - One Step Closer</h3>
+    </div>
+
+    <div class="music-card" onclick="playMusic('In The End [Official HD Music Video] - Linkin Park(M4A_128K).m4a', 'Linkin Park - In The End')">
+        <h3>Linkin Park - In The End</h3>
+    </div>
+
+</section>
+
+<!-- PLAYER FIXO -->
+<div class="player">
+    <span id="music-name">Nenhuma música</span>
+    <audio id="audio" controls></audio>
+</div>
+
+<!-- VOLTAR -->
+<div style="text-align:center; margin-top:30px;">
+    <a href="pagina.html" class="btn">⬅ Voltar</a>
+</div>
+
+<script>
+function playMusic(file, name) {
+    const audio = document.getElementById("audio");
+    const title = document.getElementById("music-name");
+
+    audio.src = "music/" + file;
+    title.textContent = name;
+    audio.play();
+}
+</script>
+
+</body>
+</html>

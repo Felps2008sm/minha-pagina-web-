@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Jogo de Clique</title>
+
+<style>
+  body {
+    text-align: center;
+    font-family: Arial;
+    background: #111;
+    color: white;
+  }
+
+  #box {
+    width: 30px;
+    height: 40px;
+    background: red;
+    position: absolute;
+    cursor: pointer;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>Clique no quadrado!</h1>
+<p>Pontos: <span id="score">0</span></p>
+
+<div id="box"></div>
+
+<script>
+let box = document.getElementById("box");
+let score = 0;
+
+function mover() {
+  let x = Math.random() * (window.innerWidth - 100);
+  let y = Math.random() * (window.innerHeight - 100);
+  box.style.left = x + "px";
+  box.style.top = y + "px";
+}
+
+box.onclick = function() {
+  score++;
+  document.getElementById("score").textContent = score;
+  mover();
+};
+
+// inicia posição
+mover();
+</script>
+
+</body>
+</html>
