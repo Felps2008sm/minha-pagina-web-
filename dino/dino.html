@@ -2,7 +2,9 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dino Game com Cenário</title>
+
 <style>
     body {
         margin: 0;
@@ -16,6 +18,7 @@
         margin: auto;
         background: linear-gradient(#87CEEB, #E0F6FF);
         border-bottom: 3px solid #333;
+        touch-action: manipulation;
     }
 
     #score {
@@ -36,15 +39,24 @@
     }
 </style>
 </head>
+
 <body>
 
 <div id="score">0</div>
-<div id="gameOver">GAME OVER<br>Pressione ESPAÇO</div>
-<canvas id="game" width="800" height="200"></canvas>
+<div id="gameOver">GAME OVER<br>Toque ou pressione ESPAÇO</div>
+<canvas id="game"></canvas>
 
 <script>
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
+
+// RESPONSIVO
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = 200;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
 
 let dino = {
     x: 50, y: 150, w: 40, h: 40,
@@ -60,16 +72,26 @@ let score = 0;
 let gameOver = false;
 let groundOffset = 0;
 
-// CONTROLES
+// CONTROLE PC
 document.addEventListener("keydown", e => {
-    if (e.code === "Space") {
-        if (gameOver) restart();
-        else if (dino.grounded) {
-            dino.dy = dino.jump;
-            dino.grounded = false;
-        }
-    }
+    if (e.code === "Space") jump();
 });
+
+// CONTROLE MOBILE (TOQUE)
+document.addEventListener("touchstart", e => {
+    e.preventDefault();
+    jump();
+}, { passive: false });
+
+// FUNÇÃO DE PULO (reutilizada)
+function jump() {
+    if (gameOver) {
+        restart();
+    } else if (dino.grounded) {
+        dino.dy = dino.jump;
+        dino.grounded = false;
+    }
+}
 
 // CENÁRIO
 function spawnCloud() {
@@ -104,7 +126,6 @@ function spawnObstacle() {
 function update() {
     if (gameOver) return;
 
-    // Dino física
     dino.y += dino.dy;
     dino.dy += dino.gravity;
 
@@ -114,24 +135,20 @@ function update() {
         dino.grounded = true;
     }
 
-    // Obstáculos
     obstacles.forEach(o => o.x -= speed);
     obstacles = obstacles.filter(o => o.x + o.w > 0);
 
-    // Nuvens
     clouds.forEach(c => c.x -= c.speed);
     clouds = clouds.filter(c => c.x > -50);
 
-    // Montanhas
     mountains.forEach(m => m.x -= m.speed);
     mountains = mountains.filter(m => m.x > -100);
 
-    // Spawn cenário
     if (Math.random() < 0.01) spawnCloud();
     if (Math.random() < 0.005) spawnMountain();
     if (Math.random() < 0.02) spawnObstacle();
 
-    // Colisão
+    // COLISÃO
     obstacles.forEach(o => {
         if (
             dino.x < o.x + o.w &&
@@ -144,11 +161,9 @@ function update() {
         }
     });
 
-    // Chão animado
     groundOffset -= speed;
     if (groundOffset <= -40) groundOffset = 0;
 
-    // Pontuação
     score++;
     document.getElementById("score").innerText = score;
 }
@@ -157,7 +172,6 @@ function update() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Montanhas (fundo)
     ctx.fillStyle = "#999";
     mountains.forEach(m => {
         ctx.beginPath();
@@ -167,7 +181,6 @@ function draw() {
         ctx.fill();
     });
 
-    // Nuvens
     ctx.fillStyle = "#fff";
     clouds.forEach(c => {
         ctx.beginPath();
@@ -176,7 +189,6 @@ function draw() {
         ctx.fill();
     });
 
-    // Chão
     ctx.strokeStyle = "#333";
     ctx.beginPath();
     for (let i = 0; i < canvas.width; i += 40) {
@@ -185,11 +197,9 @@ function draw() {
     }
     ctx.stroke();
 
-    // Dino
     ctx.fillStyle = "#222";
     ctx.fillRect(dino.x, dino.y, dino.w, dino.h);
 
-    // Obstáculos
     ctx.fillStyle = "#444";
     obstacles.forEach(o => {
         ctx.fillRect(o.x, o.y, o.w, o.h);
@@ -214,7 +224,6 @@ function restart() {
     document.getElementById("gameOver").style.display = "none";
 }
 
-// START
 loop();
 </script>
 
