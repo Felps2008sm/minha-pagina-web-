@@ -1,34 +1,139 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
     <title>Filmes</title>
+
+    <link rel="stylesheet" href="./css/style.css">
+
+    <style>
+        .container {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .filmes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .filme {
+            width: 300px;
+            background: var(--card);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.4s;
+            color: var(--text); /* 🔥 GARANTE TEXTO VISÍVEL */
+        }
+
+        .filme img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .filme:hover {
+            transform: scale(1.05);
+            background: var(--primary);
+        }
+
+        .filme-content {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .filme h2 {
+            margin-bottom: 10px;
+        }
+
+        .voltar {
+            margin-top: 40px;
+            display: inline-block;
+            padding: 12px 20px;
+            background: var(--primary);
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .voltar:hover {
+            transform: scale(1.1);
+        }
+
+        /* 🔥 CORREÇÃO CRÍTICA DAS ANIMAÇÕES */
+        .fade-in,
+        .slide-up,
+        .zoom-in {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    </style>
 </head>
+
 <body>
-    <h1> filmes</h1>
-</body>
-<ul>
-    <li>
-        <img src="imagem/4238-cartaz.jpg" width="300" height="400" alt="">
-        <strong>Interestelar:</strong>
-        Em um futuro próximo, a Terra enfrenta uma crise ambiental severa que ameaça a sobrevivência da humanidade. Cooper, um ex-piloto da NASA, é recrutado para uma missão secreta ao lado de cientistas que descobrem um buraco de minhoca próximo a Saturno. Através dele, a equipe viaja para outra galáxia em busca de planetas habitáveis. Enquanto exploram mundos desconhecidos e enfrentam desafios extremos, como dilatação do tempo e condições hostis, Cooper luta contra a distância emocional de sua filha, Murph, que permanece na Terra tentando salvar a humanidade por outros meios. A história mistura ciência, sacrifício e laços familiares profundos.
-    </li>
-    <li>
-        <img src="imagem/big-poster-filme-vingadores-ultimato-lo001-tamanho-90x60-cm-poster-marvel.jpg" width="300" height="400">
-        <strong>Vingadores Ultimato:</strong>
-        Após os eventos devastadores causados por Thanos, que eliminou metade da vida no universo, os Vingadores restantes enfrentam o luto e a derrota. Anos depois, surge uma possível solução: viajar no tempo para recuperar as Joias do Infinito antes que caiam nas mãos do vilão. Em uma missão arriscada e emocional, os heróis revisitarem momentos importantes do passado, enfrentando dilemas e sacrifícios pessoais. A batalha final reúne forças épicas em uma tentativa desesperada de restaurar o equilíbrio do universo, culminando em despedidas marcantes e no encerramento de uma era.
-    </li>
-    <li>
-        <img src="imagem/big-poster-filme-joker-coringa-joaquin-phoenix-lo02-90x60-cm-poster.jpg" width="300" height="400">
-        <strong>Coringa:</strong>
-        Arthur Fleck é um homem solitário que trabalha como palhaço e sonha em se tornar comediante, mas vive à margem de uma sociedade que o ignora e maltrata. Sofrendo de problemas mentais e enfrentando dificuldades financeiras, ele depende de um sistema público que começa a falhar. À medida que sua vida desmorona — com rejeições, violência e abandono — Arthur passa por uma transformação psicológica profunda. Em meio ao caos social de Gotham, ele adota a identidade do Coringa, tornando-se um símbolo de revolta e anarquia. O filme apresenta uma visão sombria e realista da origem de um dos vilões mais icônicos.
-</ul>
-<body>
-    <h1>
-        <a href="pagina.html"> pagina inicial</a>
-    </h1>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="logo">🎬 Filmes</div>
+        <ul class="nav-links">
+            <li><a href="pagina.html">Início</a></li>
+        </ul>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div class="container">
+
+        <h1>🎥 Lista de Filmes</h1>
+
+        <div class="filmes">
+
+            <!-- FILME 1 -->
+            <div class="filme">
+                <img src="./imagem/4238-cartaz.jpg" alt="Interestelar">
+                <div class="filme-content">
+                    <h2>Interestelar</h2>
+                    <p>
+                        Em um futuro próximo, a Terra enfrenta uma crise ambiental severa...
+                    </p>
+                </div>
+            </div>
+
+            <!-- FILME 2 -->
+            <div class="filme">
+                <img src="./imagem/big-poster-filme-vingadores-ultimato-lo001-tamanho-90x60-cm-poster-marvel.jpg"
+                    alt="Vingadores">
+                <div class="filme-content">
+                    <h2>Vingadores: Ultimato</h2>
+                    <p>
+                        Após os eventos devastadores causados por Thanos...
+                    </p>
+                </div>
+            </div>
+
+            <!-- FILME 3 -->
+            <div class="filme">
+                <img src="./imagem/big-poster-filme-joker-coringa-joaquin-phoenix-lo02-90x60-cm-poster.jpg"
+                    alt="Coringa">
+                <div class="filme-content">
+                    <h2>Coringa</h2>
+                    <p>
+                        Arthur Fleck é um homem solitário que enfrenta uma sociedade cruel...
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <a href="pagina.html" class="voltar">⬅ Voltar para página inicial</a>
+
+    </div>
+
 </body>
 
 </html>
