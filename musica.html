@@ -6,13 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Música</title>
     <link rel="stylesheet" href="./css/style.css">
+
+    <style>
+        /* PLAYER MODERNO */
+        .player {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(90deg, #000, #111);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .player img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .music-card {
+            width: 220px;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            background: var(--card);
+            transition: 0.3s;
+        }
+
+        .music-card:hover {
+            transform: scale(1.1);
+            background: var(--primary);
+        }
+
+        /* música ativa */
+        .active {
+            border: 2px solid var(--primary);
+            transform: scale(1.1);
+        }
+
+        /* barra fake */
+        .progress {
+            width: 200px;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
 <header class="navbar">
-    <div class="logo">Minha Logo</div>
+    <div class="logo">🎧 Música</div>
 
     <nav>
         <ul class="nav-links">
@@ -24,48 +75,70 @@
     </nav>
 </header>
 
-<!-- HERO -->
 <section class="music-hero">
-    <h1>🎵 Música</h1>
-    <p>Escute suas músicas favoritas</p>
+    <h1 class="fade-in">🎵 Música</h1>
+    <p class="slide-up">Escute suas músicas favoritas</p>
 </section>
 
-<!-- PLAYLIST -->
 <section class="playlist">
 
-    <div class="music-card" onclick="playMusic('Akon - Smack That (Official Music Video) ft. Eminem(M4A_128K).m4a', 'Akon - Smack That')">
+    <div class="music-card fade-in"
+        onclick="playMusic(this,'Akon - Smack That (Official Music Video) ft. Eminem(M4A_128K).m4a','Akon - Smack That','img/akon.jpg')">
         <h3>Akon - Smack That</h3>
     </div>
 
-    <div class="music-card" onclick="playMusic('One Step Closer [Official HD Music Video] - Linkin Park(M4A_128K).m4a', 'Linkin Park - One Step Closer')">
+    <div class="music-card slide-up"
+        onclick="playMusic(this,'One Step Closer (M4A_128K).m4a','Linkin Park - One Step Closer','img/linkin.jpg')">
         <h3>Linkin Park - One Step Closer</h3>
     </div>
 
-    <div class="music-card" onclick="playMusic('In The End [Official HD Music Video] - Linkin Park(M4A_128K).m4a', 'Linkin Park - In The End')">
+    <div class="music-card zoom-in"
+        onclick="playMusic(this,'In The End (M4A_128K).m4a','Linkin Park - In The End','img/linkin.jpg')">
         <h3>Linkin Park - In The End</h3>
     </div>
 
 </section>
 
-<!-- PLAYER FIXO -->
+<!-- PLAYER -->
 <div class="player">
-    <span id="music-name">Nenhuma música</span>
+
+    <div class="player-info">
+        <img id="cover" src="" alt="">
+        <div>
+            <span id="music-name">Nenhuma música</span>
+        </div>
+    </div>
+
     <audio id="audio" controls></audio>
+
 </div>
 
-<!-- VOLTAR -->
 <div style="text-align:center; margin-top:30px;">
     <a href="pagina.html" class="btn">⬅ Voltar</a>
 </div>
 
 <script>
-function playMusic(file, name) {
+let currentCard = null;
+
+function playMusic(element, file, name, cover) {
     const audio = document.getElementById("audio");
     const title = document.getElementById("music-name");
+    const img = document.getElementById("cover");
 
+    // troca música
     audio.src = "music/" + file;
     title.textContent = name;
+    img.src = cover;
+
     audio.play();
+
+    // destaque visual
+    if (currentCard) {
+        currentCard.classList.remove("active");
+    }
+
+    element.classList.add("active");
+    currentCard = element;
 }
 </script>
 
